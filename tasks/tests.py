@@ -46,3 +46,38 @@ class TasksTest(TestCase):
         response = client.get("/tasks/search?limit=xxx")
         self.assertEqual(response.status_code,400)
         self.assertEqual(response.json(), {'messsage' : 'TYPE_ERROR'})
+        
+    def test_a_detail_get_success(self):
+        
+        client = Client()
+        
+        response = client.get('/tasks/5')
+        created_at = Task.objects.get(id=5).created_at
+        updated_at = Task.objects.get(id=5).updated_at
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(),{
+            'message' : 'SUCCESS',
+            'task_info' : {
+                "number"           : "C140012",
+                "title"            : "우울증 임상연구네트워크구축",
+                "duration"         : "11개월",
+                "scope"            : "국내다기관",
+                "type"             : "관찰연구",
+                "institute"        : "가톨릭대 여의도성모병원",
+                "trial_stages"     : "코호트",
+                "number_of_target" : "300",
+                "department"       : "Psychiatry",
+                "created_at"       : created_at.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3],
+                "updated_at"       : updated_at.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3]
+            }
+        })
+        
+    def test_a_detail_get_task_does_not_exist(self):
+        
+        client = Client()
+        response = client.get('/tasks/277')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(),{
+            'message' : 'TASK_DOES_NOT_EXIST',
+            
+        })   
