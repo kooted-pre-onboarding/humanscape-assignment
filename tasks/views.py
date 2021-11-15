@@ -61,3 +61,32 @@ class SearchView(View):
         except TypeError:
             return JsonResponse({'messsage' : 'TYPE_ERROR'}, status=400)
         
+class TaskDetailView(View):
+    def get(self, request, task_id):
+        try:
+            task = Task.objects.select_related(
+                'type',
+                'institute', 
+                'department', 
+                'trial_stage',
+                'scope'
+                ).get(id=task_id)
+            
+            task_info = {
+                "number"           : task.number,
+                "title"            : task.title,
+                "duration"         : task.duration,
+                "scope"            : task.scope.name,
+                "type"             : task.type.name,
+                "institute"        : task.institute.name,
+                "trial_stages"     : task.trial_stage.name,
+                "number_of_target" : task.number_of_target,
+                "department"       : task.department.name,
+                "created_at"       : task.created_at,
+                "updated_at"       : task.updated_at
+            }
+
+            return JsonResponse({'message' : 'SUCCESS', 'task_info' : task_info}, status = 200)
+        
+        except Task.DoesNotExist:
+            return JsonResponse({'message' : 'TASK_DOES_NOT_EXIST'}, status = 400)
