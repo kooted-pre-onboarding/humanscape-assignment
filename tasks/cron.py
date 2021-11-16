@@ -19,7 +19,6 @@ def daily_batch_task():
     }
     response = requests.get(OPEN_API_URL, params=params).json()
     
-    print(datetime.datetime.now(), response) #TODO:
     for task in response['data']:
         department, created  = Department.objects.get_or_create(name=task['진료과']) if task['진료과'] else (None, False)
         institute, created   = Institute.objects.get_or_create(name=task['연구책임기관']) if task['연구책임기관'] else (None, False)
