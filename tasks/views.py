@@ -6,7 +6,7 @@ from django.http      import JsonResponse
 
 from .models          import Task
 
-class TaskListView(View):
+class SearchView(View):
     def get(self, request):
         try:
             offset = int(request.GET.get('offset', 0))
@@ -23,54 +23,81 @@ class TaskListView(View):
 
             if title:
                 q.add(Q(title__icontains=title), q.AND)
-            
+
             if department:
                 q.add(Q(department__name__iexact=department), q.AND)
-            
+
             if institute:
                 q.add(Q(institute__name__contains=institute), q.AND)
-            
+
             if type:
                 q.add(Q(type__name=type), q.AND)
-            
+
             if trial_stage:
-                q.add(Q(trialstage__name__iexact=trial_stage), q.AND)
-            
+                q.add(Q(trial_stage__name__iexact=trial_stage), q.AND)
+
             if scope:
                 q.add(Q(scope__name=scope), q.AND)
-            
-            now = datetime.now()
 
-            tasks = Task.objects.select_related(
-                'department',
-                'institute',
-                'type',
-                'trial_stage',
-                'scope').filter(q, updated_at__range=[now - timedelta(days=7), now]).order_by('updated_at')[offset:offset+limit]
+            tasks = Task.objects.select_related('department', 'institute', 'type', 'trial_stage', 'scope')\
+                                .filter(q)\
+                                .order_by('updated_at')[offset:offset+limit]
 
             result = {
                 'count' : len(tasks),
                 'data'  : [{
                     'number'           : task.number,
                     'title'            : task.title,
-                    'department'       : task.department.name,
-                    'institute'        : task.institute.name,
+                    'department'       : task.department.name if task.department else '',
+                    'institute'        : task.institute.name if task.institute else '',
                     'number_of_target' : task.number_of_target,
                     'duration'         : task.duration,
-                    'type'             : task.type.name,
-                    'trial_stage'      : task.trial_stage.name,
-                    'scope'            : task.scope.name
+                    'type'             : task.type.name if task.type else '',
+                    'trial_stage'      : task.trial_stage.name if task.trial_stage else '',
+                    'scope'            : task.scope.name if task.scope else ''
                 } for task in tasks]
             }
-            
+
             return JsonResponse(result, status=200)
-        
+
         except TypeError:
-            return JsonResponse({'messsage' : 'TYPE_ERROR'}, status=400)
-        except ValueError:
-            return JsonResponse({'messsage' : 'VALUE_ERROR'}, status=400)
-            
+            return JsonResponse({'message' : 'TYPE_ERROR'}, status=400)
         
+        except ValueError:
+            return JsonResponse({'message' : 'VALUE_ERROR'}, status = 400)
+
+class TaskListView(View):
+    def get(self, request):
+        try:
+            offset = int(request.GET.get('offset', 0))
+            limit  = int(request.GET.get('limit', 10))
+            now    = datetime.now()
+
+            one_week_list = Task.objects.select_related(
+                'trial_stage', 
+                'department', 
+                'institute', 
+                'scope',
+                'type'
+                ).filter(updated_at__range=[now - timedelta(days=7), now])[offset:offset+limit]
+
+            data = [{
+                'title'            : value.title,
+                'number'           : value.number,
+                'duration'         : value.duration,
+                'number_of_target' : value.number_of_target,
+                'trial_stage'      : value.trial_stage.name if value.trial_stage else '',
+                'department'       : value.department.name if value.department else '',
+                'institute'        : value.institute.name if value.institute else '',
+                'scope'            : value.scope.name if value.scope else '',
+                'type'             : value.type.name if value.type else ''
+            } for value in one_week_list]
+
+            return JsonResponse({'data' : data }, status=200)
+
+        except KeyError :
+            return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+            
 class TaskDetailView(View):
     def get(self, request, task_id):
         try:
@@ -86,12 +113,12 @@ class TaskDetailView(View):
                 "number"           : task.number,
                 "title"            : task.title,
                 "duration"         : task.duration,
-                "scope"            : task.scope.name,
-                "type"             : task.type.name,
-                "institute"        : task.institute.name,
-                "trial_stages"     : task.trial_stage.name,
+                "scope"            : task.scope.name if task.scope else '',
+                "type"             : task.type.name if task.type else '',
+                "institute"        : task.institute.name if task.institute else '',
+                "trial_stages"     : task.trial_stage.name if task.trial_stage else '',
                 "number_of_target" : task.number_of_target,
-                "department"       : task.department.name,
+                "department"       : task.department.name if task.department else '',
                 "created_at"       : task.created_at,
                 "updated_at"       : task.updated_at
             }

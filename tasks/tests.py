@@ -71,15 +71,12 @@ class TasksTest(TestCase):
             "scope": "국내다기관"
         }]
         
-        result = {
-            'count' : 5,
-            'data'  : data
-        }    
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), result)
         
-    def test_search_get_value_error_fail(self):
-        response = client.get("/tasks?title=한국인&department=cardiology")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'data' : data})
+        
+    def test_search_get_test(self):
+        response = client.get("/tasks/search?title=한국인&department=cardiology")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), 
         {
@@ -111,9 +108,9 @@ class TasksTest(TestCase):
             })
         
         # 알맞지 않은 값을 보낸 경우 400을 리턴합니다.
-        response = client.get("/tasks?limit=xxx")
+        response = client.get("/tasks/search?limit=xxx")
         self.assertEqual(response.status_code,400)
-        self.assertEqual(response.json(), {'messsage' : 'VALUE_ERROR'})
+        self.assertEqual(response.json(), {'message' : 'VALUE_ERROR'})
         
     def test_detail_get_success(self):
         
