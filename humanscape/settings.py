@@ -20,8 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['HUMANSCAPE_SECRET_KEY']
-
+SECRET_KEY           = os.environ['HUMANSCAPE_SECRET_KEY']
+OPEN_API_SERVICE_KEY = os.environ['HUMANSCAPE_OPEN_API_SERVICE_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'core',
-    'tasks'
+    'tasks',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -171,3 +172,7 @@ CORS_ALLOW_HEADERS = (
 #         },
 #     },
 # }
+# 매일 자정 00시 batch task 실행
+CRONJOBS = [
+    ('0 0 * * * source $HOME/.zshrc;', 'tasks.cron.daily_batch_task', '>> log_cron.log 2>&1'),
+]

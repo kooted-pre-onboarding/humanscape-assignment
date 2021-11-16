@@ -362,7 +362,6 @@ zsdoc/data
 *.rdb
 
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,visualstudiocode,vim,macos,linux,zsh
-db.sqlite3
 test_db.sqlite3
 tasks.csv
 db_uploader.py
