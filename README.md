@@ -88,7 +88,7 @@
 다음 사항들을 충족하는 서비스를 구현해주세요.
 
 - **임상정보를 수집하는 batch task**
-  - 참고 : https://www.data.go.kr/data/3074271/fileData.do#/API 목록/GETuddi%3Acfc19dda-6f75-4c57-86a8-bb9c8b103887
+  - 참고 : https://www.data.go.kr/data/3074271/fileData.do#/API목록/GETuddi%3Acfc19dda-6f75-4c57-86a8-bb9c8b103887
 
 - **수집한 임상정보에 대한 API**
   - 특정 임상정보 읽기(키 값은 자유)
@@ -112,7 +112,7 @@
 
 
 
-> ## 구현 기능 # 수정
+> ## 구현 기능 
 
 ### ▶︎ 임상정보를 수집하는 batch task
 
@@ -169,7 +169,7 @@
 
 
 
-### ▶︎ 설치 및 실행 방법  #수정
+### ▶︎ 설치 및 실행 방법 
 
 #### - Local 개발 및 테스트 용
 
@@ -180,14 +180,14 @@ git clone https://github.com/kooted-pre-onboarding/humanscape-assignment.git
 cd humanscape-assignment
 ```
 
-1. 가상 환경을 생성하고 프로젝트에 사용한 python package를 설치한다
+2. 가상 환경을 생성하고 프로젝트에 사용한 python package를 설치한다
 
 ```
 conda create -n "humanscape" python=3.8
 conda activate humanscape
 ```
 
-1. docker 환경 설정 파일을 생성하고 다음을 작성한다.
+3. docker 환경 설정 파일을 생성하고 다음을 작성한다.
 
 ```
 touch .env
@@ -195,7 +195,7 @@ vi .env
 HUMANSCAPE_SECRET_KEY=SECRET_KEY
 ```
 
-1. 다음 명령어로 서버를 실행시킨다
+4. 다음 명령어로 서버를 실행시킨다
 
 ```
 docker-compose -f docker-compose.yml up 
@@ -216,14 +216,14 @@ git clone https://github.com/kooted-pre-onboarding/humanscape-assignment.git
 cd humanscape-assignment
 ```
 
-1. 가상 환경을 생성하고 프로젝트에 사용한 python package를 설치한다
+2. 가상 환경을 생성하고 프로젝트에 사용한 python package를 설치한다
 
 ```
 conda create -n "humanscape" python=3.8
 conda activate humanscape
 ```
 
-1. docker 환경 설정 파일을 생성하고 다음을 작성한다.
+3. docker 환경 설정 파일을 생성하고 다음을 작성한다.
 
 ```
 touch .env
@@ -231,7 +231,7 @@ vi .env
 HUMANSCAPE_SECRET_KEY=SECRET_KEY
 ```
 
-1. 다음 명령어로 서버를 실행시킨다
+4. 다음 명령어로 서버를 실행시킨다
 
 ```
 sudo docker-compse -f docker-compose-deploy.yml up
@@ -247,9 +247,8 @@ sudo docker-compse -f docker-compose-deploy.yml up -d
 
 
 
-테스트 결과는 [Postman loadtest 문서 링크](https://documenter.getpostman.com/view/18218753/UVC2H9Er)에서 확인 가능합니다.
 
-> ## API Document & Test  #수정
+> ## API Document & Test 
 
 
 
