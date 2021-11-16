@@ -16,7 +16,7 @@
 
 
 
-
+<br>
 
 > ## Members
 
@@ -35,7 +35,7 @@
 
 
 
-
+<br>
 
 > ## 사용 기술
 
@@ -45,7 +45,7 @@
 
 
 
-
+<br>
 
 > ## 과제 내용
 
@@ -88,7 +88,7 @@
 다음 사항들을 충족하는 서비스를 구현해주세요.
 
 - **임상정보를 수집하는 batch task**
-  - 참고 : https://www.data.go.kr/data/3074271/fileData.do#/API목록/GETuddi%3Acfc19dda-6f75-4c57-86a8-bb9c8b103887
+  - 참고 : https://www.data.go.kr/data/3074271/fileData.do#/API%20%EB%AA%A9%EB%A1%9D/GETuddi%3Acfc19dda-6f75-4c57-86a8-bb9c8b103887
 
 - **수집한 임상정보에 대한 API**
   - 특정 임상정보 읽기(키 값은 자유)
@@ -102,7 +102,7 @@
 
 
 
-
+<br>
 
 > ## 모델링
 
@@ -110,7 +110,7 @@
 
 ![image](https://user-images.githubusercontent.com/89339349/141937912-e78ce3d3-a04d-4cf1-9b6b-af4517b6ce37.png)
 
-
+<br>
 
 > ## 구현 기능 
 
@@ -169,9 +169,7 @@
 
 
 
-### ▶︎ 설치 및 실행 방법 
-
-#### - Local 개발 및 테스트 용
+### ▶︎ Docker를 활용한 배포
 
 1. 해당 프로젝트를 clone하고, 프로젝트 폴더로 이동한다.
 
@@ -180,7 +178,7 @@ git clone https://github.com/kooted-pre-onboarding/humanscape-assignment.git
 cd humanscape-assignment
 ```
 
-2. 가상 환경을 생성하고 프로젝트에 사용한 python package를 설치한다
+2. 가상 환경을 생성하고 프로젝트에 사용한 python package를 설치한다.
 
 ```
 conda create -n "humanscape" python=3.8
@@ -192,60 +190,25 @@ conda activate humanscape
 ```
 touch .env
 vi .env
-HUMANSCAPE_SECRET_KEY=SECRET_KEY
+HUMANSCAPE_SECRET_KEY='시크릿키'
+HUMANSCAPE_OPEN_API_SERVICE_KEY='API 서비스 키'
 ```
 
-4. 다음 명령어로 서버를 실행시킨다
+4. 다음 명령어로 이미지를 빌드한다.
 
 ```
-docker-compose -f docker-compose.yml up 
+docker build -t <도커계정>/<프로젝트명>:<버전> .
 ```
 
-4-1. 백그라운드로 실행하고싶을 시 `-d`옵션을 추가한다.
+5. 빌드한 이미지를 실행한다.
 
 ```
-docker-compose -f docker-compose.yml up -d
-```
-
-#### - 배포용
-
-1. 해당 프로젝트를 clone하고, 프로젝트 폴더로 이동한다.
-
-```
-git clone https://github.com/kooted-pre-onboarding/humanscape-assignment.git
-cd humanscape-assignment
-```
-
-2. 가상 환경을 생성하고 프로젝트에 사용한 python package를 설치한다
-
-```
-conda create -n "humanscape" python=3.8
-conda activate humanscape
-```
-
-3. docker 환경 설정 파일을 생성하고 다음을 작성한다.
-
-```
-touch .env
-vi .env
-HUMANSCAPE_SECRET_KEY=SECRET_KEY
-```
-
-4. 다음 명령어로 서버를 실행시킨다
-
-```
-sudo docker-compse -f docker-compose-deploy.yml up
-```
-
-4-1. 백그라운드로 실행하고싶을 시 `-d`옵션을 추가한다.
-
-```
-sudo docker-compse -f docker-compose-deploy.yml up -d
+docker run --env-file ./.env -d -p 8000:8000 --name <프로젝트명> <도커계정>/<프로젝트명>:<버전>
 ```
 
 
 
-
+<br>
 
 
 > ## API Document & Test 
@@ -260,7 +223,7 @@ sudo docker-compse -f docker-compose-deploy.yml up -d
 
 
 
-
+<br>
 
 > ## 폴더 구조 
 
