@@ -44,7 +44,7 @@ class SearchView(View):
                                 .order_by('updated_at')[offset:offset+limit]
 
             result = {
-                'count' : len(tasks),
+                'count' : tasks.count(),
                 'data'  : [{
                     'number'           : task.number,
                     'title'            : task.title,
